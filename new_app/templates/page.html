@@ -1,3 +1,5 @@
+{% load static %}
+{% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -25,7 +27,7 @@
                   </select>
 
                   <input type="text" class="custom-text" id="product_number" name="product_number" placeholder="數量">
-                  <input type="image" class="image-btn" src="plus.jpeg" border="0" alt="Submit" />
+                  <input type="image" class="image-btn" src="{% static "img/plus.png" %}" border="0" alt="Submit" />
                 </form>
               </div>
 
@@ -123,7 +125,7 @@
                       <td class="td-border">@mdo</td>
                       <td class="td-border">@mdo</td>
                       <td style="background-color:#FFFFFF;border:none">
-                        <img class="image-btn" src="minus.jpeg" border="0"/>
+                        <img class="image-btn" src="{% static "img/minus.png" %}" border="0"/>
                       </td>
 
                     </tr>
@@ -135,7 +137,7 @@
                       <td class="td-border">@mdo</td>
                       <td class="td-border">@mdo</td>
                       <td style="background-color:#FFFFFF;border:none">
-                        <img class="image-btn" src="minus.jpeg" border="0"/>
+                        <img class="image-btn" src="{% static "img/minus.png" %}" border="0"/>
                       </td>
                     </tr>
                     <tr>
@@ -146,7 +148,7 @@
                       <td class="td-border">@mdo</td>
                       <td class="td-border">@mdo</td>
                       <td style="background-color:#FFFFFF;border:none">
-                        <img class="image-btn" src="minus.jpeg" border="0"/>
+                        <img class="image-btn" src="{% static "img/minus.png" %}" border="0"/>
                       </td>
                     </tr>
                   </tbody>
