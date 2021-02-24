@@ -101,16 +101,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for o in orders %}
+                    {% for ord in orders %}
                     <tr>
-                      <td class="td-border">{{ o.0 }}</td>
-                      <td class="td-border">{{ o.1 }}</td>
-                      <td class="td-border">{{ o.2 }}</td>
-                      <td class="td-border">{{ o.3 }}</td>
-                      <td class="td-border">{{ o.4 }}</td>
-                      <td class="td-border">{{ o.5 }}</td>
+                      <td class="td-border">{{ ord.0 }}</td>
+                      <td class="td-border">{{ ord.1 }}</td>
+                      <td class="td-border">{{ ord.2 }}</td>
+                      <td class="td-border">{{ ord.3 }}</td>
+                      <td class="td-border">{{ ord.4 }}</td>
+                      <td class="td-border">{{ ord.5 }}</td>
                       <td style="background-color:#FFFFFF;border:none">
-                        <img class="image-btn" src="{% static "img/minus.png" %}" border="0"/>
+                        <a href="removeOrderView/{{ ord.1 }}/{{ ord.2 }}">
+                          <img class="image-btn" src="{% static "img/minus.png" %}" border="0" name="delete_order" value={{o.0}}/>
+                        </a>
                       </td>
 
                     </tr>

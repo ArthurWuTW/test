@@ -4,5 +4,8 @@ from . import views
 urlpatterns = [
     path('',
         views.Page.as_view(),
-        name='page')
+        name='page'),
+    path('removeOrderView/<str:order_name>/<str:order_number>',
+        views.RemoveOrderView.as_view(),
+        name='RemoveOrderView'),
 ]

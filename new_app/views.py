@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 # Create your views here.
@@ -21,6 +21,13 @@ def check_vip_and_stock(function):
             request.POST.update({'status': '', 'do_order':True})
         request.POST._mutable = False
         return function(self, request, *args, **kwargs)
+    return wrap
+
+def check_stock(function):
+    @wraps(function)
+    def wrap(self, request, order_name, order_number):
+        
+        return function(self, request)
     return wrap
 
 
@@ -50,14 +57,9 @@ class Page(View):
 
     @check_vip_and_stock
     def post(self, request):
+        render_dict = dict()
         if request.POST.get('do_order'):
             print(request.POST.get('status'))
-            # print("========================================")
-            # print(request.POST.get('product_name'))
-            # print(request.POST.get('product_number'))
-            # print(request.POST.get('customer_id'))
-            # print(request.POST.get('isVIP')) # pass none if unclicked
-            # print("========================================")
             if request.POST.get('product_name') != None:
                 product_name = request.POST.get('product_name')
             ordered_product = Product.objects.get(product_id=product_name)
@@ -72,17 +74,7 @@ class Page(View):
             order.shop_id = ordered_product.shop_id
             order.customer_id = request.POST.get('customer_id')
             order.save()
-            # print("-----------------------------------------")
 
-            # print(order.product_id)
-            # print(order.qty)
-            # print(order.price)
-            # print(order.shop_id)
-            # print(order.id)
-
-
-
-        render_dict = dict()
         products = Product.objects.all()
         product_array = list()
         for product in products:
@@ -101,3 +93,15 @@ class Page(View):
         # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         # print(render_dict)
         return render(self.request, 'page.html', render_dict)
+
+class RemoveOrderView(View):
+    def get(self, request, order_name, order_number):
+
+
+
+
+
+
+
+
+        return redirect('/')
