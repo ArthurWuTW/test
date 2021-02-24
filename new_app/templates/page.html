@@ -62,34 +62,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for p in products %}
                     <tr>
-                      <td class="td-border">3</td>
-                      <td class="td-border">Mark</td>
-                      <td class="td-border">Otto</td>
-                      <td class="td-border">@mdo</td>
+                      <td class="td-border">{{ p.0 }}</td>
+                      <td class="td-border">{{ p.1 }}</td>
+                      <td class="td-border">{{ p.2 }}</td>
+                      <td class="td-border">{{ p.3 }}</td>
                       <td class="td-border">
-                        <input type="checkbox" name="isVIP" id="isVIP" value="true">
+                        <input type="checkbox" name="isVIP" id="isVIP" value="true" onclick="return false;" {% if p.4 == 'true' %}checked{% endif %}>
                       </td>
+                    </tr>
+                    {% endfor %}
 
-                    </tr>
-                    <tr>
-                      <td class="td-border">3</td>
-                      <td class="td-border">Jacob</td>
-                      <td class="td-border">Thornton</td>
-                      <td class="td-border">@fat</td>
-                      <td class="td-border">
-                        <input type="checkbox" name="isVIP" id="isVIP" value="true">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="td-border">3</td>
-                      <td class="td-border">Larry</td>
-                      <td class="td-border">the Bird</td>
-                      <td class="td-border">@twitter</td>
-                      <td class="td-border">
-                        <input type="checkbox" name="isVIP" id="isVIP" value="true">
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
 
