@@ -16,6 +16,8 @@ def check_vip_and_stock(function):
             ordered_product = Product.objects.get(product_id=order.product_id)
             if ordered_product.stock_pcs==0:
                 request.POST.update({'status': '商品到貨'})
+            else:
+                request.POST.update({'status': ''})
         else:
             if request.POST.get('product_name') != None:
                 product_name = request.POST.get('product_name')
