@@ -14,11 +14,11 @@ def check_vip_and_stock(function):
             product_name = request.POST.get('product_name')
         ordered_product = Product.objects.get(product_id=product_name)
         if ordered_product.vip == True and request.POST.get('isVIP') == None:
-            request.POST.update({'status': 'you are not vip', 'do_order':False})
+            request.POST.update({'status': '你不是ｖｉｐ！', 'do_order':False})
         elif ordered_product.stock_pcs < int(request.POST.get('product_number')):
-            request.POST.update({'status': 'Understock', 'do_order':False})
+            request.POST.update({'status': '存貨不足', 'do_order':False})
         else:
-            request.POST.update({'status': 'Succeed', 'do_order':True})
+            request.POST.update({'status': '', 'do_order':True})
         request.POST._mutable = False
         return function(self, request, *args, **kwargs)
     return wrap
@@ -45,6 +45,7 @@ class Page(View):
         print(order_array)
         render_dict['products'] = product_array
         print(render_dict)
+        render_dict['status'] = ''
         return render(self.request, 'page.html', render_dict)
 
     @check_vip_and_stock
@@ -95,6 +96,7 @@ class Page(View):
 
         render_dict['products'] = product_array
         render_dict['orders'] = order_array
+        render_dict['status'] = request.POST.get('status')
         # print(order_array)
         # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         # print(render_dict)
