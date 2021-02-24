@@ -110,9 +110,10 @@
                       <td class="td-border">{{ ord.4 }}</td>
                       <td class="td-border">{{ ord.5 }}</td>
                       <td style="background-color:#FFFFFF;border:none">
-                        <a href="removeOrderView/{{ ord.1 }}/{{ ord.2 }}">
-                          <img class="image-btn" src="{% static "img/minus.png" %}" border="0" name="delete_order" value={{o.0}}/>
-                        </a>
+                        <form class="" action={% url 'removeOrderView' %} method="post">
+                            {% csrf_token %}
+                            <input type="image" class="image-btn" src="{% static "img/minus.png" %}" border="0" name="delete_order" value={{o.0}} alt="Submit"/>
+                        </form>
                       </td>
 
                     </tr>

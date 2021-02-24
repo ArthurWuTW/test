@@ -26,8 +26,14 @@ def check_vip_and_stock(function):
 def check_stock(function):
     @wraps(function)
     def wrap(self, request, order_name, order_number):
-        
-        return function(self, request)
+        print("====================================")
+        print(order_name, order_number)
+        print("====================================")
+        print(request)
+
+
+
+        return function(self, request, order_name, order_number)
     return wrap
 
 
@@ -94,7 +100,9 @@ class Page(View):
         # print(render_dict)
         return render(self.request, 'page.html', render_dict)
 
+
 class RemoveOrderView(View):
+
     def get(self, request, order_name, order_number):
 
 
@@ -105,3 +113,9 @@ class RemoveOrderView(View):
 
 
         return redirect('/')
+
+    def post(self, request):
+
+
+
+        return HttpResponse("adf")
