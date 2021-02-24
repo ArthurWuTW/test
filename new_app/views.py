@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 # Create your views here.
 from django.views import View
@@ -8,14 +9,13 @@ from functools import wraps
 def check_vip_and_stock(function):
     @wraps(function)
     def wrap(self, request, *args, **kwargs):
-
-        print(request.POST)
-        # if request.POST.get('isVIP') != None:
-        #
-        #     return function(request, *args, **kwargs)
-
-
-
+        if request.POST.get('product_name') != None:
+            product_name = request.POST.get('product_name')
+        ordered_product = Product.objects.get(product_id=product_name)
+        if ordered_product.vip == True and request.POST.get('isVIP') == None:
+            return HttpResponse("You are not VIP!")
+        if ordered_product.stock_pcs < int(request.POST.get('product_number')):
+            return HttpResponse("Understock")
         return function(self, request, *args, **kwargs)
     return wrap
 
@@ -45,30 +45,30 @@ class Page(View):
 
     @check_vip_and_stock
     def post(self, request):
-        print("========================================")
-        print(request.POST.get('product_name'))
-        print(request.POST.get('product_number'))
-        print(request.POST.get('customer_id'))
-        print(request.POST.get('isVIP')) # pass none if unclicked
-        print("========================================")
+        # print("========================================")
+        # print(request.POST.get('product_name'))
+        # print(request.POST.get('product_number'))
+        # print(request.POST.get('customer_id'))
+        # print(request.POST.get('isVIP')) # pass none if unclicked
+        # print("========================================")
         if request.POST.get('product_name') != None:
             product_name = request.POST.get('product_name')
-        order_product = Product.objects.get(product_id=product_name)
-        print(order_product)
+        ordered_product = Product.objects.get(product_id=product_name)
+        print(ordered_product)
         order = Order()
-        order.product_id = order_product.product_id
+        order.product_id = ordered_product.product_id
         order.qty = request.POST.get('product_number')
-        order.price = order_product.price
-        order.shop_id = order_product.shop_id
+        order.price = ordered_product.price
+        order.shop_id = ordered_product.shop_id
         order.customer_id = request.POST.get('customer_id')
         order.save()
-        print("-----------------------------------------")
+        # print("-----------------------------------------")
 
-        print(order.product_id)
-        print(order.qty)
-        print(order.price)
-        print(order.shop_id)
-        print(order.id)
+        # print(order.product_id)
+        # print(order.qty)
+        # print(order.price)
+        # print(order.shop_id)
+        # print(order.id)
 
 
 
@@ -86,7 +86,7 @@ class Page(View):
 
         render_dict['products'] = product_array
         render_dict['orders'] = order_array
-        print(order_array)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print(render_dict)
+        # print(order_array)
+        # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        # print(render_dict)
         return render(self.request, 'page.html', render_dict)
