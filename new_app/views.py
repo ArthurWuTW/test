@@ -54,6 +54,9 @@ class Page(View):
         if request.POST.get('product_name') != None:
             product_name = request.POST.get('product_name')
         ordered_product = Product.objects.get(product_id=product_name)
+        ordered_product.stock_pcs -= int(request.POST.get('product_number'))
+        ordered_product.save()
+        
         print(ordered_product)
         order = Order()
         order.product_id = ordered_product.product_id
