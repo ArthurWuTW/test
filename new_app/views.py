@@ -19,5 +19,18 @@ class Page(View):
         return render(self.request, 'page.html', render_dict)
 
     def post(self, request):
+        print("213")
+        print(request.POST.get('product_name'))
+        print(request.POST.get('product_number'))
+        print(request.POST.get('product_number'))
 
-        return render(self.request, 'page.html', {})
+        render_dict = dict()
+
+        products = Product.objects.all()
+        product_array = list()
+        for product in products:
+            product_array.append([product.product_id, product.stock_pcs, product.price, product.shop_id, str(product.vip).lower()])
+
+        render_dict['products'] = product_array
+        print(render_dict)
+        return render(self.request, 'page.html', render_dict)

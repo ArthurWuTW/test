@@ -17,14 +17,15 @@
             <div class="card">
               <div class="card-body text-center">
                 <form method="post">
-                  <select>
+                  {% csrf_token %}
+                  <select name="product_name">
                     <option value="">Select Product</option>
                     {% for p in products %}
                     <option value="{{ p.0 }}">{{ p.0 }}</option>
                     {% endfor %}
                   </select>
 
-                  <input type="text" class="custom-text" id="product_number" name="product_number" placeholder="數量">
+                  <input type="text" class="custom-text" name="product_number" placeholder="數量">
                   <input type="image" class="image-btn" src="{% static "img/plus.png" %}" border="0" alt="Submit" />
                 </form>
               </div>
