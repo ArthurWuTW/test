@@ -32,10 +32,8 @@ def check_vip_and_stock(function):
     return wrap
 
 class Page(View):
-    # @check_vip_and_stock
     def get(self, request):
         render_dict = dict()
-
         products = Product.objects.all()
         product_array = list()
         for product in products:
@@ -45,7 +43,6 @@ class Page(View):
         order_array = list()
         for order in orders:
             order_array.append([order.id, order.product_id, order.qty, order.price, order.shop_id, order.customer_id])
-
 
         render_dict['products'] = product_array
         render_dict['orders'] = order_array
@@ -69,6 +66,7 @@ class Page(View):
             order.shop_id = ordered_product.shop_id
             order.customer_id = request.POST.get('customer_id')
             order.save()
+
         elif request.POST.get('delete_order_name'):
             order = Order.objects.get(id=request.POST.get('delete_order_name'))
             ordered_product = Product.objects.get(product_id=order.product_id)
@@ -86,7 +84,6 @@ class Page(View):
         order_array = list()
         for order in orders:
             order_array.append([order.id, order.product_id, order.qty, order.price, order.shop_id, order.customer_id])
-
 
         render_dict['products'] = product_array
         render_dict['orders'] = order_array
