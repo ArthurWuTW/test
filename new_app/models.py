@@ -16,11 +16,12 @@ class Product(models.Model):
         verbose_name_plural = 'Product'
 
 class Order(models.Model):
-    id = models.IntegerField(blank=False, null=False, primary_key=True)
+    id = models.AutoField(primary_key=True)
     product_id = models.IntegerField(blank=False, null=False)
     qty = models.IntegerField(blank=False, null=False)
     price = models.IntegerField(blank=False, null=False)
     shop_id = models.CharField(max_length=100, null=False)
+    customer_id = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return str(self.id)
