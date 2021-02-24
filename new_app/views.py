@@ -10,32 +10,26 @@ def check_vip_and_stock(function):
     @wraps(function)
     def wrap(self, request, *args, **kwargs):
         request.POST._mutable = True
-        if request.POST.get('product_name') != None:
-            product_name = request.POST.get('product_name')
-        ordered_product = Product.objects.get(product_id=product_name)
-        if ordered_product.vip == True and request.POST.get('isVIP') == None:
-            request.POST.update({'status': '你不是ｖｉｐ！', 'do_order':False})
-        elif ordered_product.stock_pcs < int(request.POST.get('product_number')):
-            request.POST.update({'status': '存貨不足', 'do_order':False})
+        if request.POST.get('delete_order_name'):
+            # do somethon
+            order = Order.objects.get(id=request.POST.get('delete_order_name'))
+            ordered_product = Product.objects.get(product_id=order.product_id)
+            if ordered_product.stock_pcs==0:
+                request.POST.update({'status': '商品到貨'})
         else:
-            request.POST.update({'status': '', 'do_order':True})
+            if request.POST.get('product_name') != None:
+                product_name = request.POST.get('product_name')
+            ordered_product = Product.objects.get(product_id=product_name)
+
+            if ordered_product.vip == True and request.POST.get('isVIP') == None:
+                request.POST.update({'status': '你不是ｖｉｐ！', 'do_order':False})
+            elif ordered_product.stock_pcs < int(request.POST.get('product_number')):
+                request.POST.update({'status': '貨源不足', 'do_order':False})
+            else:
+                request.POST.update({'status': '', 'do_order':True})
         request.POST._mutable = False
         return function(self, request, *args, **kwargs)
     return wrap
-
-def check_stock(function):
-    @wraps(function)
-    def wrap(self, request, order_name, order_number):
-        print("====================================")
-        print(order_name, order_number)
-        print("====================================")
-        print(request)
-
-
-
-        return function(self, request, order_name, order_number)
-    return wrap
-
 
 class Page(View):
     # @check_vip_and_stock
@@ -55,24 +49,19 @@ class Page(View):
 
         render_dict['products'] = product_array
         render_dict['orders'] = order_array
-        print(order_array)
         render_dict['products'] = product_array
-        print(render_dict)
-        render_dict['status'] = ''
         return render(self.request, 'page.html', render_dict)
 
     @check_vip_and_stock
     def post(self, request):
         render_dict = dict()
         if request.POST.get('do_order'):
-            print(request.POST.get('status'))
             if request.POST.get('product_name') != None:
                 product_name = request.POST.get('product_name')
             ordered_product = Product.objects.get(product_id=product_name)
             ordered_product.stock_pcs -= int(request.POST.get('product_number'))
             ordered_product.save()
 
-            print(ordered_product)
             order = Order()
             order.product_id = ordered_product.product_id
             order.qty = request.POST.get('product_number')
@@ -80,6 +69,13 @@ class Page(View):
             order.shop_id = ordered_product.shop_id
             order.customer_id = request.POST.get('customer_id')
             order.save()
+        elif request.POST.get('delete_order_name'):
+            order = Order.objects.get(id=request.POST.get('delete_order_name'))
+            ordered_product = Product.objects.get(product_id=order.product_id)
+
+            ordered_product.stock_pcs += order.qty
+            ordered_product.save()
+            order.delete()
 
         products = Product.objects.all()
         product_array = list()
@@ -95,27 +91,4 @@ class Page(View):
         render_dict['products'] = product_array
         render_dict['orders'] = order_array
         render_dict['status'] = request.POST.get('status')
-        # print(order_array)
-        # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        # print(render_dict)
         return render(self.request, 'page.html', render_dict)
-
-
-class RemoveOrderView(View):
-
-    def get(self, request, order_name, order_number):
-
-
-
-
-
-
-
-
-        return redirect('/')
-
-    def post(self, request):
-
-
-
-        return HttpResponse("adf")
