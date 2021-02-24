@@ -19,11 +19,9 @@
                 <form method="post">
                   <select>
                     <option value="">Select Product</option>
-                    <option value="123">123</option>
-                    <option value="123">123</option>
-                    <option value="123">213</option>
-                    <option value="123">123</option>
-                    <option value="123">123</option>
+                    {% for p in products %}
+                    <option value="{{ p.0 }}">{{ p.0 }}</option>
+                    {% endfor %}
                   </select>
 
                   <input type="text" class="custom-text" id="product_number" name="product_number" placeholder="數量">
