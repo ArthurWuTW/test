@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 from django.views import View
@@ -89,3 +89,13 @@ class Page(View):
         render_dict['orders'] = order_array
         render_dict['status'] = request.POST.get('status')
         return render(self.request, 'page.html', render_dict)
+
+class CalculateTopThree(View):
+    def get(self, request):
+
+        top3_order = Order.objects.raw('''SELECT id, product_id, SUM(qty) AS sum_number FROM new_app_order GROUP BY product_id ORDER BY sum_number DESC LIMIT 3;''')
+
+        for order in top3_order:
+            print(order.product_id)
+
+        return HttpResponse("asdf")
