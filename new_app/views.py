@@ -7,14 +7,21 @@ from functools import wraps
 
 def check_vip_and_stock(function):
     @wraps(function)
-    def wrap(request, *args, **kwargs):
+    def wrap(self, request, *args, **kwargs):
 
-        return function(request, *args, **kwargs)
+        print(request.POST)
+        # if request.POST.get('isVIP') != None:
+        #
+        #     return function(request, *args, **kwargs)
+
+
+
+        return function(self, request, *args, **kwargs)
     return wrap
 
 
 class Page(View):
-    @check_vip_and_stock
+    # @check_vip_and_stock
     def get(self, request):
         render_dict = dict()
 
@@ -36,6 +43,7 @@ class Page(View):
         print(render_dict)
         return render(self.request, 'page.html', render_dict)
 
+    @check_vip_and_stock
     def post(self, request):
         print("========================================")
         print(request.POST.get('product_name'))
@@ -45,13 +53,13 @@ class Page(View):
         print("========================================")
         if request.POST.get('product_name') != None:
             product_name = request.POST.get('product_name')
-        order_product = Product.objects.filter(product_id=product_name)
-        print(order_product[0])
+        order_product = Product.objects.get(product_id=product_name)
+        print(order_product)
         order = Order()
-        order.product_id = order_product[0].product_id
+        order.product_id = order_product.product_id
         order.qty = request.POST.get('product_number')
-        order.price = order_product[0].price
-        order.shop_id = order_product[0].shop_id
+        order.price = order_product.price
+        order.shop_id = order_product.shop_id
         order.customer_id = request.POST.get('customer_id')
         order.save()
         print("-----------------------------------------")
