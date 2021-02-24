@@ -1,0 +1,69 @@
+.row{
+  justify-content: center;
+}
+
+.text-center{
+  text-align: center;
+}
+
+select{
+  padding: 8px;
+  font-size: 13px;
+  width:200px;
+  border: 1px solid #aaa;
+  margin-right: 10px
+}
+
+.image-btn{
+  width: 23px;
+  height: 23px;
+}
+
+.custom-text{
+  width: 70px;
+  height: 23px;
+  margin-right: 13px;
+}
+
+.text-left{
+  text-align: left;
+}
+
+.td-last{
+  border:1px solid #FFFFFF;
+  border-bottom:1px solid #FFFFFF;
+  border-top-color: #FFFFFF;
+}
+
+table{
+  width: auto;
+  margin: 0 auto;
+}
+
+.td-border{
+  border:1px solid #000000;
+  border-bottom:1px solid #000000;
+  border-top-color: #000000;
+}
+
+.card{
+  border:none;
+}
+
+
+.custom-btn{
+  background-color:white;
+  color: black;
+  padding: 18px;
+  border-radius: 40px;
+  font-size: 13px;
+  width: 140px;
+  border: 1px solid black;
+}
+
+.warning-status{
+  font-size:20px;
+  color:#ff0000;
+  font-weight:bold;
+  font-style:italic;
+}
