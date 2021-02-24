@@ -9,13 +9,17 @@ from functools import wraps
 def check_vip_and_stock(function):
     @wraps(function)
     def wrap(self, request, *args, **kwargs):
+        request.POST._mutable = True
         if request.POST.get('product_name') != None:
             product_name = request.POST.get('product_name')
         ordered_product = Product.objects.get(product_id=product_name)
         if ordered_product.vip == True and request.POST.get('isVIP') == None:
-            return HttpResponse("You are not VIP!")
-        if ordered_product.stock_pcs < int(request.POST.get('product_number')):
-            return HttpResponse("Understock")
+            request.POST.update({'status': 'you are not vip', 'do_order':False})
+        elif ordered_product.stock_pcs < int(request.POST.get('product_number')):
+            request.POST.update({'status': 'Understock', 'do_order':False})
+        else:
+            request.POST.update({'status': 'Succeed', 'do_order':True})
+        request.POST._mutable = False
         return function(self, request, *args, **kwargs)
     return wrap
 
@@ -45,33 +49,35 @@ class Page(View):
 
     @check_vip_and_stock
     def post(self, request):
-        # print("========================================")
-        # print(request.POST.get('product_name'))
-        # print(request.POST.get('product_number'))
-        # print(request.POST.get('customer_id'))
-        # print(request.POST.get('isVIP')) # pass none if unclicked
-        # print("========================================")
-        if request.POST.get('product_name') != None:
-            product_name = request.POST.get('product_name')
-        ordered_product = Product.objects.get(product_id=product_name)
-        ordered_product.stock_pcs -= int(request.POST.get('product_number'))
-        ordered_product.save()
-        
-        print(ordered_product)
-        order = Order()
-        order.product_id = ordered_product.product_id
-        order.qty = request.POST.get('product_number')
-        order.price = ordered_product.price
-        order.shop_id = ordered_product.shop_id
-        order.customer_id = request.POST.get('customer_id')
-        order.save()
-        # print("-----------------------------------------")
+        if request.POST.get('do_order'):
+            print(request.POST.get('status'))
+            # print("========================================")
+            # print(request.POST.get('product_name'))
+            # print(request.POST.get('product_number'))
+            # print(request.POST.get('customer_id'))
+            # print(request.POST.get('isVIP')) # pass none if unclicked
+            # print("========================================")
+            if request.POST.get('product_name') != None:
+                product_name = request.POST.get('product_name')
+            ordered_product = Product.objects.get(product_id=product_name)
+            ordered_product.stock_pcs -= int(request.POST.get('product_number'))
+            ordered_product.save()
 
-        # print(order.product_id)
-        # print(order.qty)
-        # print(order.price)
-        # print(order.shop_id)
-        # print(order.id)
+            print(ordered_product)
+            order = Order()
+            order.product_id = ordered_product.product_id
+            order.qty = request.POST.get('product_number')
+            order.price = ordered_product.price
+            order.shop_id = ordered_product.shop_id
+            order.customer_id = request.POST.get('customer_id')
+            order.save()
+            # print("-----------------------------------------")
+
+            # print(order.product_id)
+            # print(order.qty)
+            # print(order.price)
+            # print(order.shop_id)
+            # print(order.id)
 
 
 
