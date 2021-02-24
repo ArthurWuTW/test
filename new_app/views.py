@@ -3,9 +3,18 @@ from django.shortcuts import render
 # Create your views here.
 from django.views import View
 from .models import Product, Order
+from functools import wraps
+
+def check_vip_and_stock(function):
+    @wraps(function)
+    def wrap(request, *args, **kwargs):
+
+        return function(request, *args, **kwargs)
+    return wrap
 
 
 class Page(View):
+    @check_vip_and_stock
     def get(self, request):
         render_dict = dict()
 
