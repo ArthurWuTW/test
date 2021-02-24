@@ -16,7 +16,7 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-body text-center">
-                <form method="post">
+                <form id="post-form" method="post">
                   {% csrf_token %}
                   <select name="product_name">
                     <option value="">Select Product</option>
@@ -36,7 +36,7 @@
           <div class="col-lg-6">
             <div class="card">
               <div class="card-body text-left">
-                <input type="text" id="product_number" name="product_number" placeholder="Customer ID">
+                <input type="text" form="post-form" name="customer_id" placeholder="Customer ID">
                 <br>
                 <input type="checkbox" name="isVIP" id="isVIP" value="true">
                 <label for="isVIP">是否為VIP身份</label>

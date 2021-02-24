@@ -22,7 +22,7 @@ class Page(View):
         print("213")
         print(request.POST.get('product_name'))
         print(request.POST.get('product_number'))
-        print(request.POST.get('product_number'))
+        print(request.POST.get('customer_id'))
 
         render_dict = dict()
 
