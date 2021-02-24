@@ -95,7 +95,10 @@ class CalculateTopThree(View):
 
         top3_order = Order.objects.raw('''SELECT id, product_id, SUM(qty) AS sum_number FROM new_app_order GROUP BY product_id ORDER BY sum_number DESC LIMIT 3;''')
 
+        data = {
+            'top3': []
+        }
         for order in top3_order:
-            print(order.product_id)
+            data['top3'].append(order.product_id)
 
-        return HttpResponse("asdf")
+        return JsonResponse(data)
