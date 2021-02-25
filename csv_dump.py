@@ -24,9 +24,7 @@ def job():
 
     pd.DataFrame(data).to_csv(dir_path+"/data.csv")
 
-schedule.every(1).minutes.do(job)
-# schedule.every().hour.do(job)
-# schedule.every().day.at("10:30").do(job)
+schedule.every().day.at("00:00").do(job)
 
 while 1:
     schedule.run_pending()
