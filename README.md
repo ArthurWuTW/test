@@ -14,6 +14,7 @@
 ```
 test
 ├── csv_dump.py                 # Store csv
+├── data.csv                    # Number of orders, sales figures, Total sales
 ├── manage.py
 ├── mysite
 │   ├── asgi.py
