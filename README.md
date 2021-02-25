@@ -13,8 +13,8 @@
 ## Django Project Structure
 ```
 test
-├── csv_dump.py                 # Store csv
-├── data.csv                    # Number of orders, sales figures, Total sales
+├── csv_dump.py                 # Store csv file
+├── data.csv                    # csv file: Number of orders, sales figures, Total sales
 ├── manage.py
 ├── mysite
 │   ├── asgi.py
