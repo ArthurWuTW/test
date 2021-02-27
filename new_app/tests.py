@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import resolve
 from selenium import webdriver
+import new_app.views
 
 
 # Create your tests here.
