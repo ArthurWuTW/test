@@ -65,6 +65,21 @@ class MySeleniumTests(StaticLiveServerTestCase):
         print(driver.page_source)
 
 
+        # Select
+        opt = driver.find_element_by_name('product_name')
+        Select(opt).select_by_index(1)
+
+        # insert custom name
+        driver.find_element_by_id('product_number').send_keys('5')
+        driver.find_element_by_id('customer_id').send_keys('ABC')
+
+        driver.find_element_by_id('image-btn').click()
+
+        print(driver.page_source)
+
+
+
+
 
 
 

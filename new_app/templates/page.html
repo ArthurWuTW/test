@@ -27,8 +27,8 @@
                     {% endfor %}
                   </select>
 
-                  <input type="number" class="custom-text" name="product_number" min="1" placeholder="數量" required>
-                  <input type="image" class="image-btn" src="{% static "img/plus.png" %}" border="0" alt="Submit" />
+                  <input type="number" class="custom-text" id="product_number" name="product_number" min="1" placeholder="數量" required>
+                  <input type="image" id="image-btn" class="image-btn" src="{% static "img/plus.png" %}" border="0" alt="Submit" />
                 </form>
               </div>
 
@@ -38,7 +38,7 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-body text-left">
-                <input form="post-form" type="text" name="customer_id" placeholder="Customer ID" required>
+                <input form="post-form" type="text" id="customer_id" name="customer_id" placeholder="Customer ID" required>
                 <br>
                 <input form="post-form" type="checkbox" name="isVIP" id="isVIP" value="true">
                 <label for="isVIP">是否為VIP身份</label>
