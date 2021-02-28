@@ -115,7 +115,7 @@
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="delete_order_name" value="{{ ord.0 }}">
-                            <input type="image" class="image-btn" src="{% static "img/minus.png" %}" border="0" alt="Submit"/>
+                            <input type="image" id="image-btn-{{ ord.0 }}" class="image-btn" src="{% static "img/minus.png" %}" border="0" alt="Submit"/>
                         </form>
                       </td>
 
