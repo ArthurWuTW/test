@@ -146,9 +146,52 @@ class MySeleniumTests(StaticLiveServerTestCase):
                 driver.find_element_by_id('image-btn').click()
 
                 self.assertIn('你不是ｖｉｐ', driver.page_source)
+        driver.quit()
 
     def test_understock_status(self):
-        a= 1
+        products = [
+            [1,	6,	150,	'um',	False],
+            [2,	10,	110,	'ms',	False],
+            [3,	20,	900,	'ps',	False],
+            [4,	2,	1899,	'ps',	True],
+            [5,	8,	35,	    'ms',	False],
+            [6,	5,	60,	    'um',	False],
+            [7,	5,	800,	'ps',	True]
+        ]
+
+        for product in products:
+            new_data = Product()
+            new_data.product_id = product[0]
+            new_data.stock_pcs = product[1]
+            new_data.price = product[2]
+            new_data.shop_id  = product[3]
+            new_data.vip  = product[4]
+            new_data.save()
+
+        options = Options()
+        options.headless = True
+        driver = webdriver.Firefox(options=options)
+
+        for product in products:
+            if(product[4]==True):
+                driver.get(self.live_server_url)
+
+                print(driver.page_source)
+
+                # Select
+                opt = driver.find_element_by_name('product_name')
+                Select(opt).select_by_index(str(product[0]))
+
+                # add order
+
+                driver.find_element_by_id('product_number').send_keys(str(product[1]+1))
+                driver.find_element_by_id('customer_id').send_keys('ABC')
+                driver.find_element_by_id('isVIP').click()
+                driver.find_element_by_id('image-btn').click()
+
+                self.assertIn('貨源不足', driver.page_source)
+        driver.quit()
+
     def test_stock_arrived_status(self):
 
 
