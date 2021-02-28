@@ -26,7 +26,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
     def tearDownClass(cls):
         super().tearDownClass()
 
-    def test_insert(self):
+    def test_insert_initial_stock(self):
         products = [
             [1,	6,	150,	'um',	False],
             [2,	10,	110,	'ms',	False],
@@ -56,7 +56,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
 
 
 
-    def test_add(self):
+    def test_click_plus_button(self):
 
         products = [
             [1,	6,	150,	'um',	False],
@@ -231,6 +231,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             driver.find_element_by_id('image-btn-'+str(queried_order.id)).click()
 
             self.assertEqual(len(Order.objects.all()), 0)
+            self.assertIn('商品到貨', driver.page_source)
         driver.quit()
 
 
