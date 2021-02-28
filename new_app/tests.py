@@ -132,9 +132,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         for product in products:
             if(product[4]==True):
                 driver.get(self.live_server_url)
-
-                print(driver.page_source)
-
                 # Select
                 opt = driver.find_element_by_name('product_name')
                 Select(opt).select_by_index(str(product[0]))
@@ -175,9 +172,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         for product in products:
             if(product[4]==True):
                 driver.get(self.live_server_url)
-
-                print(driver.page_source)
-
                 # Select
                 opt = driver.find_element_by_name('product_name')
                 Select(opt).select_by_index(str(product[0]))
@@ -235,7 +229,7 @@ class MySeleniumTests(StaticLiveServerTestCase):
             queried_order = Order.objects.latest('id')
             driver.get(self.live_server_url)
             driver.find_element_by_id('image-btn-'+str(queried_order.id)).click()
-            
+
             self.assertEqual(len(Order.objects.all()), 0)
         driver.quit()
 
