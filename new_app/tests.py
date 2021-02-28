@@ -13,18 +13,6 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 import os
 
 # Create your tests here.
-class ViewTest(TestCase):
-
-    def test_url_resloves_to_view(self):
-
-        found = resolve('/')
-        self.assertEqual(found.func.view_class, new_app.views.Page)
-
-    def test_add_data(self):
-
-        options = Options()
-        options.headless = True
-        driver = webdriver.Firefox(options=options)
 
 class MySeleniumTests(StaticLiveServerTestCase):
 
@@ -36,6 +24,36 @@ class MySeleniumTests(StaticLiveServerTestCase):
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
+
+    def test_insert(self):
+        products = [
+            [1,	6,	150,	'um',	False],
+            [2,	10,	110,	'ms',	False],
+            [3,	20,	900,	'ps',	False],
+            [4,	2,	1899,	'ps',	True],
+            [5,	8,	35,	    'ms',	False],
+            [6,	5,	60,	    'um',	False],
+            [7,	5,	800,	'ps',	True]
+        ]
+        from new_app.models import Product
+        for product in products:
+            new_data = Product()
+            new_data.product_id = product[0]
+            new_data.stock_pcs = product[1]
+            new_data.price = product[2]
+            new_data.shop_id  = product[3]
+            new_data.vip  = product[4]
+            new_data.save()
+
+        # check each items
+        for product in products:
+            queried_product = Product.objects.get(product_id=product[0])
+            self.assertEqual(queried_product.stock_pcs, product[1])
+            self.assertEqual(queried_product.price, product[2])
+            self.assertEqual(queried_product.shop_id, product[3])
+            self.assertEqual(queried_product.vip, product[4])
+
+
 
     def test_add(self):
 
@@ -61,21 +79,35 @@ class MySeleniumTests(StaticLiveServerTestCase):
         options = Options()
         options.headless = True
         driver = webdriver.Firefox(options=options)
-        driver.get(self.live_server_url)
-        print(driver.page_source)
+
+        # Order every products
+        for product in products:
+            driver.get(self.live_server_url)
+            print(driver.page_source)
+            # Select
+            opt = driver.find_element_by_name('product_name')
+            Select(opt).select_by_index(str(product[0]))
+
+            # insert custom name
+            driver.find_element_by_id('product_number').send_keys(str(product[1]))
+            driver.find_element_by_id('customer_id').send_keys('ABC')
+            driver.find_element_by_id('isVIP').click()
+            driver.find_element_by_id('image-btn').click()
+
+            print(driver.page_source)
+
+            # check order
 
 
-        # Select
-        opt = driver.find_element_by_name('product_name')
-        Select(opt).select_by_index(1)
 
-        # insert custom name
-        driver.find_element_by_id('product_number').send_keys('5')
-        driver.find_element_by_id('customer_id').send_keys('ABC')
+        driver.quit()
 
-        driver.find_element_by_id('image-btn').click()
+            # Check database data
 
-        print(driver.page_source)
+            # Check frontend html
+
+
+            # Clear d
 
 
 
